@@ -6,9 +6,9 @@ from the sensor.
 
 Oscar Chavez Araiza:
 This week we finished the CONOPS report and researched more about ML. I have narrowed down the model 
-selection to CNN(Convolutional neural network). This model will allow me to blend the computer vision 
-model with a radar-based approach. This means that the AI model will take knowledge from previous 
-models.
+selection to CNN(Convolutional neural network). CNNs are widely used for computer vision, and there 
+are large amounts of parallelism to radar object tracking. For this reason, I have decided to focus 
+on CNN for the project.
 
 
 Greyson Heath:
