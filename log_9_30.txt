@@ -1,0 +1,14 @@
+Zane Meikle: We did our presentation and did some edits for the midterm report. Now I’m working on 
+getting things started for my subsystem like lining Matlab and python and making a branch.
+
+Oscar Chavez Araiza: We did our presentation. There were a few problems with the FSR and ICD that were 
+pointed out during the presentation. Those were corrected this wednesday. I’m currently still working 
+on finding a suitable AI model to train for hand gesture recognition.
+
+Daniel Lu:       Presentation finished
+		re-learn python 
+		Midterm report finished
+		Exam our first human tracking demo
+
+Greyson Heath: Presentations and final edits for midterm report. I connected with Nick and we 
+troubleshooted the OOB demo for the device and got it working.
