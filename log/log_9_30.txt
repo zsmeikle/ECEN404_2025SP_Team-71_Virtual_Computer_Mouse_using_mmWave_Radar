@@ -1,14 +1,22 @@
 Zane Meikle: We did our presentation and did some edits for the midterm report. Now I’m working on 
-getting things started for my subsystem like lining Matlab and python and making a branch.
+getting things started for my subsystem like lining Matlab and python and making a branch. 
+I plan on getting the mouse movement code ready this week and maybe start on mouse inputs and connecting 
+python to MatLab
 
 Oscar Chavez Araiza: We did our presentation. There were a few problems with the FSR and ICD that were 
-pointed out during the presentation. Those were corrected this wednesday. I’m currently still working 
-on finding a suitable AI model to train for hand gesture recognition.
+pointed out during the presentation. Those were corrected this wednesday.
+I’m currently still working on finding a suitable AI model to train for hand gesture recognition. I 
+had a slight misunderstanding with the output data I will be using for the AI. I’m gonna try to get 
+it straightened out with Greyson, so that I’m sure what the best ML model to use is.
 
-Daniel Lu:       Presentation finished
-		re-learn python 
-		Midterm report finished
-		Exam our first human tracking demo
+Daniel Lu:  We finished our presentation and edited our midterm report last week. I re-learn python 
+last week to prepare for the demo. This week, we are going to generate a tracking demo radar to see 
+how sdk code works to track objects. I will try to generate a plot and analyze the data from the demo. 
+		
 
 Greyson Heath: Presentations and final edits for midterm report. I connected with Nick and we 
-troubleshooted the OOB demo for the device and got it working.
+troubleshooted the OOB demo for the device and got it working. For this upcoming week, I plan to 
+troubleshoot the Gesture demo that Nick sent (it is not working as of typing this). Once I have it 
+working, I will explore the data that is outputted from it and see what kind of format is sent out 
+and go from there.
+
