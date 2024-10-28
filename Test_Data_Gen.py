@@ -8,7 +8,7 @@ with open("Test_Data.csv", "w") as Test_Data:
     x = 0
     while x < 1800:
         x += 1
-        Test_Data.write(str(tempX) + " " + str(tempY) + " " + str(tempRight_Click) + " " + str(tempLeft_Click) + "\n")
+        Test_Data.write(str(tempX) + ", " + str(tempY) + ", " + str(tempRight_Click) + ", " + str(tempLeft_Click) + "\n")
         if (x == 400):
             tempX = 10
             tempY = 0

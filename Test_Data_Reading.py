@@ -1,19 +1,30 @@
 import csv
 
-def get_data(line):
+def get_data(line, size):
     result = -1
     with open("Test_Data.csv", "r") as Test_Data:
         data = csv.reader(Test_Data)
+        row = list(data)
+        if (line < size):
+            result = row[line]
+            
+
+    return result
+
+def get_size():
+    result = 0
+    with open("Test_Data.csv", "r") as Test_Data:
+        data = csv.reader(Test_Data)
         for i, row in enumerate(data):
-            if i == line:
-                result = row
+            result += 1
 
     return result
 
 
 Frame_Num = 0
 while True: 
-    test = get_data(Frame_Num)
+    size = get_size()
+    test = get_data(Frame_Num, size)
     if (test == -1):
         print("end of file")
         break
