@@ -8,7 +8,7 @@ Scale = 1                                                          # scales the 
 Switch_XY = 0                                                      # switches X with Y and vice versa (0 = off, 1 = on)
 Reverse_X = 1                                                      # reverses X (1 = off, -1 = on)
 Reverse_Y = 1                                                      # reverses Y (1 = off, -1 = on)
-Refresh_Rate = 20                                                  # refreshrate of the board/data
+Refresh_Rate = 30                                                  # refreshrate of the board/data
 Test_File = "Test_Data.csv"                                        # the test file being used to demo
                                                                    #
 #Test_Functions____________________________________________________# This section is only for testing
@@ -41,9 +41,11 @@ tempLeft_Click = 0                                                 #
                                                                    #
 X = 0                                                              # Initialize X and Y
 Y = 0                                                              #
+t0 = 0                                                             # initial time variable
                                                                    #
                                                                    #
 while True: #maybe add kill variable                               # Loop to keep running
+    t0 = time.time()                                               # get initial time
                                                                    #
     #TESTING_CODE--------------------#                             # Test code
     size = get_size()                #                             # get the size of the file for get_data function
@@ -51,10 +53,10 @@ while True: #maybe add kill variable                               # Loop to kee
     if (test == -1):                 #                             # if at eof
         print("end of file")         #                             #
         break                        #                             #
-    tempX = test[0]                  #                             # define variables from data
-    tempY = test[1]                  #                             #
-    tempRight_Click = test[2]        #                             #
-    tempLeft_Click = test[3]         #                             #
+    tempX = int(test[0])             #                             # define variables from data
+    tempY = int(test[1])             #                             #
+    tempRight_Click = int(test[2])   #                             #
+    tempLeft_Click = int(test[3])    #                             #
     Frame_Num += 1                   #                             # incriment frame number
     #END_OF_TESTING CODE-------------#                             #
                                                                    #
@@ -68,19 +70,23 @@ while True: #maybe add kill variable                               # Loop to kee
            Y = Scale * Reverse_Y * tempX                           #
                                                                    #
     match tempLeft_Click:                                          # If left click
-        case 0:                                                    # Posibly inefficient but we can worry about that later
-            mouse.release(Button.left)                             #
+        case 0:                                                    # if nothing no-op
+            True                                                   #
         case 1:                                                    #
+            mouse.release(Button.left)                             #
+        case 2:                                                    #
             mouse.press(Button.left)                               #
                                                                    #
     match tempRight_Click:                                         # If right click
-        case 0:                                                    # See prev comment
-            mouse.release(Button.right)                            #
+        case 0:                                                    # if nothing no-op
+            True                                                   #
         case 1:                                                    #
+            mouse.release(Button.right)                            #
+        case 2:                                                    #
             mouse.press(Button.right)                              #
                                                                    #
     mouse.move(X, Y)                                               # Actually impliment the mouse movement
-    time.sleep(Delay)                                              # Delay as per refresh rate
+    time.sleep(Delay-(time.time() - t0))                           # Delay as per refresh rate
     
     
 
