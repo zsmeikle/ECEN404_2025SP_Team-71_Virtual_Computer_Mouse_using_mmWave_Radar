@@ -89,7 +89,7 @@ while True: #maybe add kill variable                               # Loop to kee
         case 2:                                                    #
             mouse.press(Button.right)                              #
         case default:                                              # Error invaild input
-            print("ERROR: invalid right click input.")              #
+            print("ERROR: invalid right click input.")             #
             break                                                  #
                                                                    #
     mouse.move(X, Y)                                               # Actually impliment the mouse movement
