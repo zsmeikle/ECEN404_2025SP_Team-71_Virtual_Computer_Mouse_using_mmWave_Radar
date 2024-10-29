@@ -67,6 +67,9 @@ while True: #maybe add kill variable                               # Loop to kee
         case 1:                                                    #
            X = Scale * Reverse_X * tempY                           #
            Y = Scale * Reverse_Y * tempX                           #
+        case default:                                              # Invalid Switch_XY
+            print("ERROR: Switch-XY must be a 0 or a 1.")          #
+            break                                                  #
                                                                    #
     match tempLeft_Click:                                          # If left click
         case 0:                                                    # if nothing no-op
