@@ -31,7 +31,7 @@ def get_size():                                                    # get the siz
                                                                    #
 #Code______________________________________________________________#
 mouse = Controller()                                               # defines mouse so we can control it
-Delay = 1/Refresh_Rate                                             # Coverts to delay fro mrefresh rate
+Delay = 1/Refresh_Rate                                             # Coverts to delay from refresh rate
 Frame_Num = 0 #TESTING ONLY, REMOVE LATER!!!                       # Test variable for frame number
                                                                    #
 tempX = 1                                                          # these variable are temporary
@@ -50,7 +50,7 @@ while True: #maybe add kill variable                               # Loop to kee
     #TESTING_CODE--------------------#                             # Test code
     size = get_size()                #                             # get the size of the file for get_data function
     test = get_data(Frame_Num, size) #                             # Gets the data at the frame number
-    if (test == -1):                 #                             # if at eof
+    if (test == -1):                 #                             # if at eof end loop
         print("end of file")         #                             #
         break                        #                             #
     tempX = int(test[0])             #                             # define variables from data
@@ -59,7 +59,6 @@ while True: #maybe add kill variable                               # Loop to kee
     tempLeft_Click = int(test[3])    #                             #
     Frame_Num += 1                   #                             # incriment frame number
     #END_OF_TESTING CODE-------------#                             #
-                                                                   #
                                                                    #
     match Switch_XY:                                               # If we are switching X and Y
         case 0:                                                    #
@@ -76,7 +75,9 @@ while True: #maybe add kill variable                               # Loop to kee
             mouse.release(Button.left)                             #
         case 2:                                                    #
             mouse.press(Button.left)                               #
-                                                                   #
+        case default:                                              # Error invaild input
+            print("ERROR: invalid left click input.")              #
+            break                                                  #
     match tempRight_Click:                                         # If right click
         case 0:                                                    # if nothing no-op
             True                                                   #
@@ -84,9 +85,13 @@ while True: #maybe add kill variable                               # Loop to kee
             mouse.release(Button.right)                            #
         case 2:                                                    #
             mouse.press(Button.right)                              #
+        case default:                                              # Error invaild input
+            print("ERROR: invalid right click input.")              #
+            break                                                  #
                                                                    #
     mouse.move(X, Y)                                               # Actually impliment the mouse movement
     time.sleep(Delay-(time.time() - t0))                           # Delay as per refresh rate and time code took
+#__________________________________________________________________#
     
     
 
