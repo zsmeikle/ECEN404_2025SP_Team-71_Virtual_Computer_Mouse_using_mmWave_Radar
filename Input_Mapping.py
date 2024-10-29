@@ -34,7 +34,7 @@ mouse = Controller()                                               # defines mou
 Delay = 1/Refresh_Rate                                             # Coverts to delay fro mrefresh rate
 Frame_Num = 0 #TESTING ONLY, REMOVE LATER!!!                       # Test variable for frame number
                                                                    #
-tempX = 1                                                          # these variable will come from Matlab later
+tempX = 1                                                          # these variable are temporary
 tempY = 1                                                          #
 tempRight_Click = 0                                                #
 tempLeft_Click = 0                                                 #
@@ -86,7 +86,7 @@ while True: #maybe add kill variable                               # Loop to kee
             mouse.press(Button.right)                              #
                                                                    #
     mouse.move(X, Y)                                               # Actually impliment the mouse movement
-    time.sleep(Delay-(time.time() - t0))                           # Delay as per refresh rate
+    time.sleep(Delay-(time.time() - t0))                           # Delay as per refresh rate and time code took
     
     
 
