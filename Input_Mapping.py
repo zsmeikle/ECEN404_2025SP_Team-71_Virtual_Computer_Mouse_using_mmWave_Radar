@@ -43,6 +43,8 @@ X = 0                                                              # Initialize 
 Y = 0                                                              #
 t0 = 0                                                             # initial time variable
                                                                    #
+size = get_size()#Testing only                                     # get the size of the file for get_data function
+                                                                   #
                                                                    #
 while True: #maybe add kill variable                               # Loop to keep running
     t0 = time.time()                                               # get initial time
@@ -79,7 +81,7 @@ while True: #maybe add kill variable                               # Loop to kee
         case 2:                                                    #
             mouse.press(Button.left)                               #
         case default:                                              # Error invaild input
-            print("ERROR: invalid left click input.")              #
+            print("ERROR: invalid left click input: " + str(tempLeft_Click))#
             break                                                  #
     match tempRight_Click:                                         # If right click
         case 0:                                                    # if nothing no-op
@@ -89,11 +91,16 @@ while True: #maybe add kill variable                               # Loop to kee
         case 2:                                                    #
             mouse.press(Button.right)                              #
         case default:                                              # Error invaild input
-            print("ERROR: invalid right click input.")             #
+            print("ERROR: invalid right click input: " + str(tempRight_Click))#
             break                                                  #
                                                                    #
     mouse.move(X, Y)                                               # Actually impliment the mouse movement
-    time.sleep(Delay-(time.time() - t0))                           # Delay as per refresh rate and time code took
+    New_Delay = Delay-(time.time() - t0)                           # Calculate delay with processing time
+    if (New_Delay < 0):                                            # Skip a frame if took to long to compute
+        time.sleep(New_Delay + Delay)                              #
+        print("Skipped Frame: " + str(Frame_Num))                  # Print if a frame was skipped
+    else:                                                          #
+        time.sleep(New_Delay)                                      # Delay as per refresh rate and time code took
 #__________________________________________________________________#
     
     
