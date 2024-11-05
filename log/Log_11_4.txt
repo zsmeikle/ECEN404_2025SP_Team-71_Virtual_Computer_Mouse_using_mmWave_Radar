@@ -1,0 +1,38 @@
+Zane Meikle: 
+- I wrote the modules for the test code to run and generated a test file. I also realized some of the
+code for reading test data was unoptimized so I rewrote it to make it more efficient. 
+
+- Now I am going to combine the testing code into the original file to get the demo ready.
+
+Greyson Heath:
+I spent time tweaking settings within the visualizer to see if I could represent the hand movement more 
+accurately/consistently for the pointer position radar. 
+Data parser successfully reads in data from both radars. Extracted meaningful parts of the data and
+passed forward to the next subsystems.
+Tomorrow during our meeting with TI, I plan to pick Nick’s brain further and see if he has any ideas to
+improve the capturing of a hand.
+
+Oscar Chavez
+I decided on using 40 frames per gesture to train the model. With 40 frames it seems to be more than
+enough time to track any of the gestures we made.
+After that I got 100 data samples for my hand and trained the AI with it. The results were finicky,
+but acceptable.
+I got 100 samples for each gesture for my hand and another person's hand. The results were very
+promising, and further training might not be needed.
+I am planning to save the model I made with only two people, and get more data to train another model
+to see if it gets any better.
+This week I’m planning to increase the viability by getting the data in 20 frame samples to increase
+the recognition rate and decrease the chances of a gesture being caught between two sets of 40 frames.
+
+
+Daniel Lu
+
+      - 	Keep working on the final demo
+Waiting for the next meeting to talk about the radar performance
+K-means will be used if the performance of the radar is updatedI did research on k mean clustering and
+found this math application can increase the accuracy of the gesture positioning data. The k mean
+clustering will be used in my final demo.
+
+
+
+
