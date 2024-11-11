@@ -4,7 +4,7 @@ import time                                                        # Allows us t
 import csv                                                         # Allows us to read csv files (for testing)
                                                                    #
 #Settings__________________________________________________________# These variables let us change different factors
-Scale = 1                                                          # scales the X and Y movements by the value
+Scale = 1                                                          # scales the X and Y movements by the value (must be int)
 Switch_XY = 0                                                      # switches X with Y and vice versa (0 = off, 1 = on)
 Reverse_X = 1                                                      # reverses X (1 = off, -1 = on)
 Reverse_Y = 1                                                      # reverses Y (1 = off, -1 = on)
@@ -31,8 +31,25 @@ def get_size():                                                    # get the siz
                                                                    #
 #Code______________________________________________________________#
 mouse = Controller()                                               # defines mouse so we can control it
-Delay = 1/Refresh_Rate                                             # Coverts to delay from refresh rate
 Frame_Num = 0 #TESTING ONLY, REMOVE LATER!!!                       # Test variable for frame number
+                                                                   #
+No_Error = True                                                    # Kill variable for loop if error
+                                                                   #
+if (Refresh_Rate <= 0):                                            # Check if refresh rate is within bounds
+    print('ERROR: Refresh_Rate must be greater than 0.')           #
+    No_Error = False                                               #
+else:                                                              #
+    Delay = 1/Refresh_Rate                                         # Coverts to delay from refresh rate
+if (Reverse_X != 1 & Reverse_X != -1):                             # Check Reverse_X is -1 or 1
+    print('ERROR: Reverse_X must be 1 or -1.')                     #
+    No_Error = False                                               #
+if (Reverse_Y != 1 & Reverse_Y != -1):                             # Check Reverse_Y is -1 or 1
+    print('ERROR: Reverse_Y must be 1 or -1.')                     #
+    No_Error = False                                               #
+if (isinstance(Scale, int) != True):                               # Check Scale is an int
+    print('ERROR: Scale must be an int.')                          #
+    No_Error = False                                               #
+                                                                   #
                                                                    #
 tempX = 1                                                          # these variable are temporary
 tempY = 1                                                          #
@@ -46,7 +63,7 @@ t0 = 0                                                             # initial tim
 size = get_size()#Testing only                                     # get the size of the file for get_data function
                                                                    #
                                                                    #
-while True: #maybe add kill variable                               # Loop to keep running
+while No_Error:                                                    # Loop to keep running
     t0 = time.time()                                               # get initial time
                                                                    #
     #TESTING_CODE--------------------#                             # Test code
@@ -81,7 +98,7 @@ while True: #maybe add kill variable                               # Loop to kee
         case 2:                                                    #
             mouse.press(Button.left)                               #
         case default:                                              # Error invaild input
-            print("ERROR: invalid left click input: " + str(tempLeft_Click))#
+            print("ERROR: invalid left click input: " + str(tempLeft_Click))
             break                                                  #
     match tempRight_Click:                                         # If right click
         case 0:                                                    # if nothing no-op
@@ -91,7 +108,7 @@ while True: #maybe add kill variable                               # Loop to kee
         case 2:                                                    #
             mouse.press(Button.right)                              #
         case default:                                              # Error invaild input
-            print("ERROR: invalid right click input: " + str(tempRight_Click))#
+            print("ERROR: invalid right click input: " + str(tempRight_Click))
             break                                                  #
                                                                    #
     mouse.move(X, Y)                                               # Actually impliment the mouse movement
