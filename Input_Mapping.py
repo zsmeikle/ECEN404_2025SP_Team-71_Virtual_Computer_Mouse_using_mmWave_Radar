@@ -40,10 +40,10 @@ if (Refresh_Rate <= 0):                                            # Check if re
     No_Error = False                                               #
 else:                                                              #
     Delay = 1/Refresh_Rate                                         # Coverts to delay from refresh rate
-if (Reverse_X != 1 & Reverse_X != -1):                             # Check Reverse_X is -1 or 1
+if (Reverse_X != 1 | Reverse_X != -1):                             # Check Reverse_X is -1 or 1
     print('ERROR: Reverse_X must be 1 or -1.')                     #
     No_Error = False                                               #
-if (Reverse_Y != 1 & Reverse_Y != -1):                             # Check Reverse_Y is -1 or 1
+if (Reverse_Y != 1 | Reverse_Y != -1):                             # Check Reverse_Y is -1 or 1
     print('ERROR: Reverse_Y must be 1 or -1.')                     #
     No_Error = False                                               #
 if (isinstance(Scale, int) != True):                               # Check Scale is an int
