@@ -6,7 +6,7 @@ import csv                                                         # Allows us t
 #Settings__________________________________________________________# These variables let us change different factors
 Scale = 1                                                          # scales the X and Y movements by the value (must be int)
 Switch_XY = 0                                                      # switches X with Y and vice versa (0 = off, 1 = on)
-Reverse_X = 1                                                      # reverses X (1 = off, -1 = on)
+Reverse_X = 1                                                     # reverses X (1 = off, -1 = on)
 Reverse_Y = 1                                                      # reverses Y (1 = off, -1 = on)
 Refresh_Rate = 30                                                  # refreshrate of the board/data
 Test_File = "Test_Data.csv"                                        # the test file being used to demo
@@ -40,10 +40,10 @@ if (Refresh_Rate <= 0):                                            # Check if re
     No_Error = False                                               #
 else:                                                              #
     Delay = 1/Refresh_Rate                                         # Coverts to delay from refresh rate
-if (Reverse_X != 1 | Reverse_X != -1):                             # Check Reverse_X is -1 or 1
+if ((Reverse_X != 1) & (Reverse_X != -1)):                         # Check Reverse_X is -1 or 1
     print('ERROR: Reverse_X must be 1 or -1.')                     #
     No_Error = False                                               #
-if (Reverse_Y != 1 | Reverse_Y != -1):                             # Check Reverse_Y is -1 or 1
+if ((Reverse_Y != 1) & (Reverse_Y != -1)):                         # Check Reverse_Y is -1 or 1
     print('ERROR: Reverse_Y must be 1 or -1.')                     #
     No_Error = False                                               #
 if (isinstance(Scale, int) != True):                               # Check Scale is an int
