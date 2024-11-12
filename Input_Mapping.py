@@ -47,8 +47,8 @@ if ((Reverse_X != 1) & (Reverse_X != -1)):                         # Check Rever
 if ((Reverse_Y != 1) & (Reverse_Y != -1)):                         # Check Reverse_Y is -1 or 1
     print('ERROR: Reverse_Y must be 1 or -1.')                     #
     No_Error = False                                               #
-if ((Switch_XY != 1) & (Switch_XY != 0)):                          # Check Reverse_Y is -1 or 1
-    print('ERROR: Switch_XY must be 1 or -1.')                     #
+if ((Switch_XY != 1) & (Switch_XY != 0)):                          # Check Switch-XY is 0 or 1
+    print('ERROR: Switch_XY must be 0 or 1.')                      #
     No_Error = False                                               #
 if (isinstance(Scale, int) != True):                               # Check Scale is an int
     print('ERROR: Scale must be an int.')                          #
