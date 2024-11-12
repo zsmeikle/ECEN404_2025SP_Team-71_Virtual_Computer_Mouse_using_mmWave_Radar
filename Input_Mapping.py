@@ -9,7 +9,7 @@ Switch_XY = 0                                                      # switches X 
 Reverse_X = 1                                                      # reverses X (1 = off, -1 = on)
 Reverse_Y = 1                                                      # reverses Y (1 = off, -1 = on)
 Refresh_Rate = 30                                                  # refreshrate of the board/data
-Test_File = "Test_Data.csv"                                        # the test file being used to demo
+Test_File = "Test_Data.csv" #TESTING ONLY                          # the test file being used to demo
                                                                    #
 #Test_Functions____________________________________________________# This section is only for testing
 def get_data(line, size):                                          # get a specific line of data from the test file
