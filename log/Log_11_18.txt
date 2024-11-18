@@ -1,0 +1,23 @@
+Zane Meikle: 
+- We did our presentations last week in class and to TI and it went well, Dr. Lusher said that we may 
+need more technical merit for 404 but we have ideas. I am at this point ready for demo.
+
+- At this point we are just working on the final report and getting ready for demo next week.
+
+Oscar Chavez:
+Created simple GUI for demo
+Changed the code to skip creating a file to predict gesture
+Tested the maximum distance and angles of detection.
+
+Daniel Lu
+Final presentation
+Final demo complete
+
+Greyson Heath
+Presented our 403 final presentation on wednesday, and also presented to Texas Instruments sponsor team 
+on Friday.
+Ready for 403 final demonstration
+Both radar devices function properly and communicate with computer
+Picks up users inputs at ~1.5ft and at least 90 degrees
+Decodes mouse positioning data and gesture feature data properly
+Wrapping up final report
