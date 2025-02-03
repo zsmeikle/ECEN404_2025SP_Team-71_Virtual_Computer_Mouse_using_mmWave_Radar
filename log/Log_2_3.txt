@@ -1,0 +1,13 @@
+Zane Meikle: We got mine and Oscars code to work together and are now going to move onto Daniels and 
+Greysons and then putting them together.
+
+
+Oscar Chavez: Built and debugged code responsible for gesture recognition to input mapping. The code 
+works at a useful rate and seems to be reliable for computer usage.
+
+
+Daniel Lu: Work on combining the gesture positioning demo with chirp configuration demo. Test during 
+the lab.
+
+Greyson Heath: Made slight revisions to the 3D case - planning on reviewing it with Nick tomorrow. 
+Worked more with Tkinter and plan to move forward with GUI.
