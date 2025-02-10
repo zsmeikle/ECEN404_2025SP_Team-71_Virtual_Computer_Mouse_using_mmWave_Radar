@@ -1,0 +1,13 @@
+Zane Meikle: We got the mouse to move via the radar and we are now getting both the gesture
+and movement to work at the same time.
+
+Oscar Chavez: We had another version issue with python, so I had to change versions from
+python 3.12 to python 3.8. We got the code running again and the responsiveness did not
+change. We also had a meeting with our sponsor, and he told us he wanted us to reduce the
+size even more by removing the mmWaveICBOOST. This will reduce the size by a factor of 3.
+
+Greyson Heath: As Zane mentioned, great progress on the “first-viable-product”. Planning to
+see if we can eliminate the mmwaveicboost and only use the IWR6843 (smaller in area).
+
+Daniel Lu: Both gesture and movement demo worked perfect with each other, but the moving
+path is not as smooth as the “real” mouse.
