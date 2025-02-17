@@ -1,0 +1,12 @@
+Zane Meikle: We got a minimum viable product done this week and now we are discussing how to move forward.
+
+Oscar Chavez: Worked on the mouse movement. It’s much smoother after adding a weighted running average. 
+The radar struggles with movement perpendicular to the model, so it moves fairly well left and right, 
+but does not move well up and down. After this I ran the scripts in parallel and the clicking works well,
+ but again the movement is too janky to control the mouse.
+
+Greyson Heath: Combined all of the current code as a team and have a minimum viable product as of now. 
+Going forwards, we plan to further correct the mouse movement and implement a GUI into the program.
+
+Daniel Lu: Working on using geometric average to locate the mouse position, planning to test the demo 
+by the end of the lab.
