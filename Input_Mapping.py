@@ -2,6 +2,7 @@
 from pynput.mouse import Button, Controller                        # Allows us to control mouse
 import time                                                        # Allows us to add delays 
 import csv                                                         # Allows us to read csv files (for testing)
+import threading                                                   # Allows us to make threads
                                                                    #
 #Settings__________________________________________________________# These variables let us change different factors
 Scale = 1                                                          # scales the X and Y movements by the value (must be int)
@@ -117,6 +118,7 @@ while No_Error:                                                    # Loop to kee
                                                                    #
     mouse.move(X, Y)                                               # Actually impliment the mouse movement
     New_Delay = Delay-(time.time() - t0)                           # Calculate delay with processing time
+    print(New_Delay)
     if (New_Delay < 0):                                            # Skip a frame if took to long to compute
         time.sleep(New_Delay + Delay)                              #
         print("Skipped Frame: " + str(Frame_Num))                  # Print if a frame was skipped
