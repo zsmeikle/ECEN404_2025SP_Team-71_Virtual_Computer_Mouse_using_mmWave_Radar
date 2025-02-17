@@ -52,7 +52,7 @@ def get_pos(num_points_1, num_points_2, list1, list2):
     print("V_y euqals to ", output_v_y)  # velocity check
     return output_v_x, output_v_y
 #Pointer Positioning
-cfg = open("C:/Users/lostk/Downloads/xwr68xx_AOP_profile_2025_02_17T14_44_16_998.cfg", "r") #Open Config File to send to radar over UART
+cfg = open("C:/Users/lostk/Downloads/xwr68xx_AOP_profile_2025_02_17T14_57_20_747.cfg", "r") #Open Config File to send to radar over UART
 my_parser = UARTParser("DoubleCOMPort") #Defining Pointer Parser from class UARTParser
 my_parser.connectComPorts("COM7", "COM8") #Device-Manager defined Ports
 my_parser.sendCfg(cfg) #Send Config File
@@ -63,18 +63,19 @@ cfg.close() #Close File
 # my_parser2.connectComPorts("COM9", "COM10") #Device-Manager defined Ports
 tempX = 1                                                          # these variable are temporary
 tempY = 1                                                          #
-count = 0
-prevFrame = 0
-data_points = []
-point_clouds = []
-mouse = Controller()
-xvels = []
-yvels = []
-num_vels = 0
-continous_frames = 0
+count = 0                                                          # Tracking number of frames stored
+prevFrame = 0                                                      # Set to 0 on startup
+data_points = []                                                   # stores num_points for frames //Only 2 are need for velocity calculations
+point_clouds = []                                                  # stores point clouds for frames
+mouse = Controller()                                               # Start mouse controller
+xvels = []                                                         # stores x-velocities calculated from 2 frames
+yvels = []                                                         # stores y-velocities calculated from 2 frames
+num_vels = 0                                                       # tracks num of velocities
+continous_frames = 0                                               # tracks number of continuous active frames
 
-avg_x = 0
-avg_y = 0
+avg_x = 0                                                          # Average x_velocity
+avg_y = 0                                                          # Average y_velocity
+
 while(1): #Radars connected and running, always true until not - Implement GUI?
     try:
         pointer_Data = my_parser.readAndParseUartDoubleCOMPort() #Parsing Pointer radar data
@@ -98,7 +99,8 @@ while(1): #Radars connected and running, always true until not - Implement GUI?
         #print()
         #print("Gesture Data")
         #print(trimmed_Gesture, '\n') #Outputting feature data
-        if(pointer_frameNum - prevFrame > 3 or continous_frames > 10):
+        if(pointer_frameNum - prevFrame > 3 or continous_frames > 10): #If 3 inactive frames of 10 active frames reset
+            #Clear vars
             xvels.clear()
             yvels.clear()
             num_vels = 0
@@ -108,36 +110,48 @@ while(1): #Radars connected and running, always true until not - Implement GUI?
             avg_x, avg_y = 0, 0
             continous_frames = 0
 
-        if(pointer_numPoints > 0):
+        if(pointer_numPoints > 0): #Check for active frame
+            #Add points and pointCloud
             data_points.append(pointer_numPoints)
             point_clouds.append(pointCloudArray)
+            #add 1 to size of pointCloud Array
             count += 1
+            # Initialize Values
             tempX, tempY = 0, 0
             prevFrame = pointer_frameNum
+            # Add 1 to frames
             continous_frames += 1
 
-            if count > 2:
-                point_clouds.pop(0)
-                data_points.pop(0)
+            # If theres two saved frames then do velocity calculation and remove oldest frame
+            if count > 1:
+                #Calculate velocities
                 tempX, tempY = get_pos(data_points[0], data_points[1], point_clouds[0], point_clouds[1])
-                if abs(tempX) < .07: tempX = 0
-                if abs(tempY) < .07: tempY = 0
+                #Check for minimum movement.
+
+                if abs(tempX) < .05: tempX = 0
+                if abs(tempY) < .05: tempY = 0
+                #store velocities
                 xvels.append(tempX)
                 yvels.append(tempY)
                 num_vels += 1 
+                # pop oldest data
+                point_clouds.pop(0)
+                data_points.pop(0)
         else:
+            # Append 0s if no data
             xvels.append(0)
             yvels.append(0)
             num_vels += 1
+        # Initialize values
         avg_x = 0
         avg_y = 0
-        tot_weight = 0
+        tot_weight = 0  # Used to normalize the weights
         for i in range(num_vels):
             tot_weight += (i+1)
-            avg_x += xvels[i]*(i+1)
-            avg_y += yvels[i]*(i+1)
-        avg_x /= tot_weight
-        avg_y /= tot_weight
+            avg_x += xvels[i]*(i+1) # apply weights
+            avg_y += yvels[i]*(i+1) # apply weights
+        avg_x /= tot_weight # Normalize average
+        avg_y /= tot_weight # Normalize average
         #if(avg_x/avg_y > 10 or avg_y/avg_x > 10)
         #print(avg_x, avg_y)
         if Switch_XY == 0:  # If we are switching X and Y
