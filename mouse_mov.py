@@ -19,20 +19,17 @@ def geo_mean(list):
     for num in list:
         product *= num
 
-    list = product ** (1 / len(list))
-
-    geometric_mean = product ** (1 / len(list))
+    
+    geometric_mean = math.prod(list) ** (1 / len(list))
+    
     return geometric_mean
 # 123456    561234
 
-def get_pos(list1, list2,list3, list4,list5, list6):
+def get_pos(list1, list2):
 
     updated_list1 = [[element + 100 for element in sublist] for sublist in list1]
     updated_list2 = [[element + 100 for element in sublist] for sublist in list2]
-    updated_list3 = [[element + 100 for element in sublist] for sublist in list3]
-    updated_list4 = [[element + 100 for element in sublist] for sublist in list4]
-    updated_list5 = [[element + 100 for element in sublist] for sublist in list5]
-    updated_list6 = [[element + 100 for element in sublist] for sublist in list6]
+
 
 
 #list1 x
@@ -51,67 +48,26 @@ def get_pos(list1, list2,list3, list4,list5, list6):
     geo_mean_2_x = geo_mean(first_elements_2_x)
     geo_mean_2_y = geo_mean(first_elements_2_y)
 
-#list3 x
-    first_elements_3_x = [sublist[0] for sublist in updated_list3]
-#list3 y
-    first_elements_3_y = [sublist[2] for sublist in updated_list3]
-    geo_mean_3_x = geo_mean(first_elements_3_x)
-    geo_mean_3_y = geo_mean(first_elements_3_y)
+
+    distance_x = geo_mean_2_x - geo_mean_1_x
+    distance_y = geo_mean_2_y - geo_mean_1_y
+
+    
+    velovity_x = distance_x
 
 
-
-#list4 x
-    first_elements_4_x = [sublist[0] for sublist in updated_list4]
-#list4 y
-    first_elements_4_y = [sublist[2] for sublist in updated_list4]
-    geo_mean_4_x = geo_mean(first_elements_4_x)
-    geo_mean_4_y = geo_mean(first_elements_4_y)
-
-#list5 x
-    first_elements_5_x = [sublist[0] for sublist in updated_list5]
-#list5 y
-    first_elements_5_y = [sublist[2] for sublist in updated_list5]
-    geo_mean_5_x = geo_mean(first_elements_5_x)
-    geo_mean_5_y = geo_mean(first_elements_5_y)
-
-
-#list6 x
-    first_elements_6_x = [sublist[0] for sublist in updated_list6]
-#list6 y
-    first_elements_6_y = [sublist[2] for sublist in updated_list6]
-    geo_mean_6_x = geo_mean(first_elements_6_x)
-    geo_mean_6_y = geo_mean(first_elements_6_y)
-
-    x_points = np.array([geo_mean_1_x,geo_mean_2_x,geo_mean_3_x,geo_mean_4_x,geo_mean_5_x,geo_mean_6_x])
-    y_points = np.array([geo_mean_1_y,geo_mean_2_y,geo_mean_3_y,geo_mean_4_y,geo_mean_5_y,geo_mean_6_y])
-    slope, intercept = np.polyfit(x_points, y_points, 1)
-    distance_x = geo_mean_6_x - geo_mean_1_x
-    distance_y = geo_mean_6_y - geo_mean_1_y
-    mag_distance = math.sqrt(distance_x**2+distance_y**2)
-
-    angle_radians = math.atan(slope)
-
-    # Convert radians to degrees
-    angle_degrees = math.degrees(angle_radians)
-    if geo_mean_6_y > geo_mean_1_y:
-        velovity_y = mag_distance * math.sin(angle_radians)
-    else:
-        velovity_y = -mag_distance * math.sin(angle_radians)
-        
-    if geo_mean_6_x > geo_mean_1_x:
-        velovity_x = mag_distance * math.cos(angle_radians)
-    else:
-        velovity_x = -mag_distance * math.cos(angle_radians)
+    velovity_y = distance_y
+   
 
     return velovity_x,velovity_y
 
 
 #Pointer Positioning
-cfg = open("C:/Users/lemal/OneDrive/Desktop/ecen403/Finaldemo/xwr68xx_AOP_profile_2025_02_17T14_57_20_747.cfg", "r") #Open Config File to send to radar over UART
+# cfg = open("C:/Users/lemal/OneDrive/Desktop/ecen403/Finaldemo/xwr68xx_AOP_profile_2025_02_17T14_57_20_747.cfg", "r") #Open Config File to send to radar over UART
 my_parser = UARTParser("DoubleCOMPort") #Defining Pointer Parser from class UARTParser
 my_parser.connectComPorts("COM5", "COM3") #Device-Manager defined Ports
-my_parser.sendCfg(cfg) #Send Config File
-cfg.close() #Close File
+# my_parser.sendCfg(cfg) #Send Config File
+# cfg.close() #Close File
 
 #ML Gesture
 # my_parser2 = UARTParser("DoubleCOMPort") #Defining Gesture Parser from class UARTParser
@@ -159,29 +115,126 @@ while(1): #Radars connected and running, always true until not - Implement GUI?
         if pointer_numPoints == 0: 
             continue
         count += 1
+        
+        if pointer_numPoints < 10:
+            continue
         # data_points is the number of points for the points cloud
+
+        newPointCloud = []
+        for point in pointCloudArray:
+            minY = 0.1
+            maxY = 0.4
+            if point[1] > minY and point[1] < maxY:
+                newPointCloud.append(point)
+            else:
+                newPointCloud == newPointCloud
+        
+        if newPointCloud == []:
+            continue  
+        #x range
+        newPointCloud2 = []
+        for point in newPointCloud:
+            minX = -0.14
+            maxX = 0.14
+            if point[0] > minX and point[0] < maxX:
+                newPointCloud2.append(point)
+            else:
+                newPointCloud2 == newPointCloud2
+
+        if newPointCloud2 == []:
+            continue                
+
+        #z range
+
+        newPointCloud3 = []
+        for point in newPointCloud2:
+            minZ = -0.14
+            maxZ = 0.14
+            if point[0] > minZ and point[0] < maxZ:
+                newPointCloud3.append(point)
+            else:
+                newPointCloud3 == newPointCloud3
+
+        if newPointCloud3 == []:
+            continue                
+        #print(newPointCloud3)
+
+        new_pointer_numPoints = int(len(newPointCloud3))
+
+        print(pointer_numPoints)
+        print(new_pointer_numPoints)
         data_points.append(pointer_numPoints)
         # array of point clouds
-        point_clouds.append(pointCloudArray)
+
+        
 
 
-        if len(data_points) < 6:
+        #new array
+        delete_num = int(1)
+
+        newPointCloud3 = np.array(newPointCloud3)
+
+        for num in range(delete_num):
+            # Extract x-coordinates
+            x_values = np.array([point[0] for point in newPointCloud3])
+
+            # Compute the average x value
+            avg_x = np.mean(x_values)
+
+            # Find the index of the point with the highest |x - avg_x| difference
+            idx_to_remove = np.argmax(np.abs(x_values - avg_x))
+
+            # Remove the point
+            newPointCloud3 = np.delete(newPointCloud3, idx_to_remove, axis=0)
+
+        for num in range(delete_num):
+            # Extract x-coordinates
+            x_values = np.array([point[1] for point in newPointCloud3])
+
+            # Compute the average x value
+            avg_x = np.mean(x_values)
+
+            # Find the index of the point with the highest |x - avg_x| difference
+            idx_to_remove = np.argmax(np.abs(x_values - avg_x))
+
+            # Remove the point
+            newPointCloud3 = np.delete(newPointCloud3, idx_to_remove, axis=0)
+
+        for num in range(delete_num):
+            # Extract x-coordinates
+            x_values = np.array([point[2] for point in newPointCloud3])
+
+            # Compute the average x value
+            avg_x = np.mean(x_values)
+
+            # Find the index of the point with the highest |x - avg_x| difference
+            idx_to_remove = np.argmax(np.abs(x_values - avg_x))
+
+            # Remove the point
+            newPointCloud3 = np.delete(newPointCloud3, idx_to_remove, axis=0)
+
+        if len(newPointCloud3) == 0:
+            continue
+
+        print(newPointCloud3)
+
+        point_clouds.append(newPointCloud3)
+        #point_clouds.append(newPointCloud3)
+        #print(pointCloudArray)
+
+
+        if len(point_clouds) < 2:
             continue
     
         #my function
-        avg_x, avg_y = get_pos(point_clouds[0],point_clouds[1],point_clouds[2],point_clouds[3],point_clouds[4],point_clouds[5])
+        avg_x, avg_y = get_pos(point_clouds[0],point_clouds[1])
         #[1,2,3,4,5,6]
 
         data_points.pop(0)
-        data_points.pop(1)
-        data_points.pop(2)
-        data_points.pop(3)
         point_clouds.pop(0)
-        point_clouds.pop(1)
-        point_clouds.pop(2)
-        point_clouds.pop(3)
         #[5,6] len = 2
         #[[[],[]],[[],[]]]
+
 
 
         if Switch_XY == 0:  # If we are switching X and Y
@@ -202,7 +255,8 @@ while(1): #Radars connected and running, always true until not - Implement GUI?
         # else:  #
         #     time.sleep(New_Delay)  # Delay as per refresh rate and time code took
     # __________________________________________________________________#
-    except:
+    except Exception as e:
+       print(e)
        continue
 #----------------------------------------------------------------------------
 
