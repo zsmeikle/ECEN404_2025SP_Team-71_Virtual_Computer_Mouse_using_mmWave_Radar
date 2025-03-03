@@ -9,12 +9,15 @@ from pynput.mouse import Button, Controller
 #                                                                        #
 ##########################################################################
 
-def run_frame_gen(shared_queue, refresh_rate, frames):#generates frames inbetween data points
+def run_frame_gen(shared_queue, refresh_rate, frames, lol):#generates frames inbetween data points
     mouse = Controller()#start mouse thing
     not_kill = True #to keep loop running
     while not_kill:#loop until told to end
         try:
-            X, Y, frames, not_kill= shared_queue.get(timeout=1/refresh_rate) #get data from queue
+            X, Y, not_kill= shared_queue.get(timeout=1/refresh_rate) #get data from queue
+
+            if(lol):
+                print("Joe Biden")
              
             for  i in range(0, frames, 1):#generate frames inbetween
                 mouse.move(X/frames, Y/frames) #move mouse

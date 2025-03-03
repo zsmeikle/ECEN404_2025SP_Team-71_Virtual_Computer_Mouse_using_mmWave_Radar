@@ -13,6 +13,8 @@ Reverse_X = 1                                                      # reverses X 
 Reverse_Y = 1                                                      # reverses Y (1 = off, -1 = on)
 Refresh_Rate = 22                                                 # refreshrate of the board/data
 frame_gen_frames = 5
+frame_gen_on_off = True
+lol = False
 Test_File = "Test_Data.csv" #TESTING ONLY                          # the test file being used to demo
                                                                    #
 #Test_Functions____________________________________________________# This section is only for testing
@@ -76,7 +78,7 @@ t0 = 0                                                             # initial tim
 size = get_size()#Testing only                                     # get the size of the file for get_data function
                                                                     #
                                                                     #
-thread = threading.Thread(target=run_frame_gen, args=(shared_queue,Refresh_Rate, frame_gen_frames,))
+thread = threading.Thread(target=run_frame_gen, args=(shared_queue,Refresh_Rate, frame_gen_frames, lol,))
 thread.start()
     
 while No_Error:                                                    # Loop to keep running
@@ -127,7 +129,14 @@ while No_Error:                                                    # Loop to kee
             print("ERROR: invalid right click input: " + str(tempRight_Click))
             break                                                  #
                                                                     #
-    shared_queue.put((X, Y, 5, True))
+    if(frame_gen_on_off):
+        shared_queue.put((X, Y, True))
+    else:
+        mouse.move(X, Y)
+
+    if(Frame_Num == 500):
+        lol = True
+    
     #mouse.move(X, Y)                                               # Actually impliment the mouse movement
     New_Delay = Delay-(time.time() - t0)                           # Calculate delay with processing time
     #print(New_Delay)
