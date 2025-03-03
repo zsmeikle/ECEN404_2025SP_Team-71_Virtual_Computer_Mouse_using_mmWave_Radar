@@ -1,0 +1,12 @@
+Oscar Chavez: Made a movement visualizer to help with smoothing out the movement of the mouse. 
+Also made a script to try to get the position of the hand from the gesture angle data.
+Made code to move the radar to a relative position based on position data instead of velocities.
+
+Zane Meikle: last week we managed to get minecraft to work and tested the mouse on Argio, there we 
+had some issues with accuracy so we assigned daniel to work on it and gave the frame gen to me, which 
+I am working on now.
+
+Greyson Heath: Completed CAD enclosure model for just the radar device. Plan on working as a team to 
+figure out the best way to combine the devices or separate them. Working on GUI in the meantime.
+
+Daniel Lu: Construct a new moving demo responding faster to the change in direction of the mouse

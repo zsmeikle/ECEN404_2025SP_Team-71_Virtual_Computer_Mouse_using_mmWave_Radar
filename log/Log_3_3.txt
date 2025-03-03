@@ -1,0 +1,16 @@
+Zane Meikle: I wrote the initial function for the frame gen program, it works but there is an error 
+where the child process isn’t killing itself. I fixed that problem this morning and am now polishing 
+the code.
+
+Greyson Heath: Printed the first test of the case, comparing to radars in lab and documenting changes 
+needed to improve design.
+
+Oscar Chavez: Trained a new ML model to use the OOB demo binary. It works well for the gestures we 
+already had. When I added the left wave and right wave gesture, the model became very inaccurate. I also 
+kept testing ways of getting position data from the Gesture Recognition binary.
+
+Daniel Lu : I created a new mouse moving demo. The new demo is expected to work under noise environment. 
+Test during the lab.
+
+
+
