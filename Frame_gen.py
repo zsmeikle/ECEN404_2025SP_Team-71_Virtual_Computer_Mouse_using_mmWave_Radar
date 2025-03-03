@@ -2,19 +2,22 @@ import queue
 import time
 from pynput.mouse import Button, Controller
 
-def F_gen(shared_queue):
-    mouse = Controller()
-    while True:
-        try:
-            X, Y, frames= shared_queue.get(timeout=1/22) 
-             
-            for  i in range(0, frames, 1):
-                mouse.move(X, Y) 
-                time.sleep(1/22/frames) 
-                print("did thing")
-        except queue.Empty:
-            pass
+#IMPORTANT################################################################
+#                                                                        #
+# Make sure to tun "shared_queue.put((0, 0, 0, False))" before joing     #
+# thread or the thread will not die and will break the python terminal!! #
+#                                                                        #
+##########################################################################
 
-if __name__ == "__main__":
-    shared_queue = queue.Queue()
-    F_gen(shared_queue)
+def run_frame_gen(shared_queue, refresh_rate, frames):#generates frames inbetween data points
+    mouse = Controller()#start mouse thing
+    not_kill = True #to keep loop running
+    while not_kill:#loop until told to end
+        try:
+            X, Y, frames, not_kill= shared_queue.get(timeout=1/refresh_rate) #get data from queue
+             
+            for  i in range(0, frames, 1):#generate frames inbetween
+                mouse.move(X/frames, Y/frames) #move mouse
+                time.sleep(1/refresh_rate/frames) #wait till next time to move
+        except queue.Empty:#if nothing in queue continue
+            pass

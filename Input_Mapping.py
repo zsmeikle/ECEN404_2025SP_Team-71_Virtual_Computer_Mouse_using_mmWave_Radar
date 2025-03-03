@@ -3,7 +3,7 @@ from pynput.mouse import Button, Controller                        # Allows us t
 import time                                                        # Allows us to add delays 
 import csv                                                         # Allows us to read csv files (for testing)
 import threading                                                   # Allows us to make threads
-#import subprocess                                                  #
+from Frame_gen import run_frame_gen                                               #
 import queue                                                       #
                                                                    #
 #Settings__________________________________________________________# These variables let us change different factors
@@ -12,6 +12,7 @@ Switch_XY = 0                                                      # switches X 
 Reverse_X = 1                                                      # reverses X (1 = off, -1 = on)
 Reverse_Y = 1                                                      # reverses Y (1 = off, -1 = on)
 Refresh_Rate = 22                                                 # refreshrate of the board/data
+frame_gen_frames = 5
 Test_File = "Test_Data.csv" #TESTING ONLY                          # the test file being used to demo
                                                                    #
 #Test_Functions____________________________________________________# This section is only for testing
@@ -33,20 +34,7 @@ def get_size():                                                    # get the siz
     return result                                                  #
 
 
-def run_frame_gen(shared_queue):
-    mouse = Controller()
-    not_kill = True
-    frames = 5
-    while not_kill:
-        t0 
-        try:
-            X, Y, frames, not_kill= shared_queue.get(timeout=1/22) 
-             
-            for  i in range(0, frames, 1):
-                mouse.move(X/frames, Y/frames) 
-                time.sleep(1/22/frames) 
-        except queue.Empty:
-            pass
+
                                                                    #
 #Code______________________________________________________________#
 #def main():
@@ -88,7 +76,7 @@ t0 = 0                                                             # initial tim
 size = get_size()#Testing only                                     # get the size of the file for get_data function
                                                                     #
                                                                     #
-thread = threading.Thread(target=run_frame_gen, args=(shared_queue,))
+thread = threading.Thread(target=run_frame_gen, args=(shared_queue,Refresh_Rate, frame_gen_frames,))
 thread.start()
     
 while No_Error:                                                    # Loop to keep running
