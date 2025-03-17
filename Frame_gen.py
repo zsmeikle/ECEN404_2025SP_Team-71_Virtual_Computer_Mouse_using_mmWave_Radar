@@ -4,7 +4,7 @@ from pynput.mouse import Button, Controller
 
 #IMPORTANT################################################################
 #                                                                        #
-# Make sure to tun "shared_queue.put((0, 0, 0, False))" before joing     #
+# Make sure to put "shared_queue.put((0, 0, 0, False))" before joing     #
 # thread or the thread will not die and will break the python terminal!! #
 #                                                                        #
 ##########################################################################
