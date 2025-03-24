@@ -1,0 +1,15 @@
+Zane Meikle: We met with TI and they agreed with our plan and gave us the suggestion of possibly 
+reducing the number of radars later. Currently we are continuing to work on actually integrating code.
+
+Daniel Lu:	 Prepare for the presentation
+		 Meeting with TI and make agreement on future plan
+		 Working on gathering our demos into one demo to test
+
+Greyson Heath: Reviewed the TI sponsor meeting, and worked on the initial presentation. As of now, 
+we are continuing forward with two radars to obtain a working prototype. Worked on constructing a 
+3D model for a case for both radar devices, and experimented with Tkinter (python package) to create 
+a GUI for our software.
+
+Oscar Chavez: Met with TI, he agreed that we should add more gestures to improve the mouse control. 
+He also stated that it would be a great improvement if we could reduce the number of radars used. I’ve 
+been working on integrating the code together.

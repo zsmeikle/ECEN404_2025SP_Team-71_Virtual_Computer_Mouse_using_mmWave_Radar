@@ -1,0 +1,21 @@
+Zane Meikle: 
+I made the initial version of the python code to control the mouse, it has some hold over variables that
+ will need to be replaced when I connect it to matlab. I also downloaded matlab.
+I plan on getting Matlab connected this week and starting on the program making a test program in matlab
+ to test the python script.
+Oscar Chavez
+This week I reworked the gestures the AI will recognize. I have finally realized that the hand will not 
+only be represented by a few points ~3. This means that the gestures have to be able to be perceived 
+without having a high amount of definition of the hand.
+I plan on getting training data for the AI on the 2 new gestures this week. If that is not possible 
+then I will focus on understanding the AI that was provided to us as a base.
+Danel Lu:
+This week I made the basic demo of the gesture positioning code, waiting for a real case to optimize.
+I am planning to make a test program, but still waiting for a real gesture case.
+Greyson Heath:
+I made the sample Gesture Recognition bin file and program run and properly communicate with the mmWave 
+and 6843. 
+I plan on finding a program that can interface with the UART (pull the raw data from the output of the 
+radar, which will be used for machine learning).
+
+

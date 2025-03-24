@@ -1,0 +1,25 @@
+Zane Meikle:
+This week we finished the CONOPS report, downloaded python and printed helloworld, and I looked into 
+pynput.mouse for controlling the mouse via python. My personal plan from here is to start testing 
+controlling the mouse via pynput.mouse and then looking into how to sync that up with the updates 
+from the sensor.
+
+Oscar Chavez Araiza:
+This week we finished the CONOPS report and researched more about ML. I have narrowed down the model 
+selection to CNN(Convolutional neural network). CNNs are widely used for computer vision, and there 
+are large amounts of parallelism to radar object tracking. For this reason, I have decided to focus 
+on CNN for the project.
+
+
+Greyson Heath:
+This past week we finished writing our CONOPS. We also had a meeting with our sponsor (Nick) and 
+cleared up some more confusion regarding the setup and orientation of the boards sent to us from TI. 
+We had received the DCA1000 and mmwaveICboost boards, but lacked the actual radar board (IWR6843AOPEVM) 
+until it arrived later last week. This week I plan on configuring the boards and running the “out-of-box” 
+demo for the IWR6843 to understand TI’s software and how the radar interacts with our environment. 
+Following this setup, I will be able to see how the data is outputted and work on researching and 
+“trial-and-erroring” an adequate chirp configuration to detect our hand.
+
+Daniel Lu:
+A 3D-human-tracking case of the radar project will be run this week. I will do research on the example 
+code provided by TI. I will ask questions about the math and code application on plot generating. 

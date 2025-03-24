@@ -1,0 +1,17 @@
+Zane Meikle: 
+- I finished the code, we have a small issue with registration but it should be fixed next week during 
+open registration.
+- I am now working on the presentation and doing the validation plan.
+
+Daniel Lu:
+Final demo complete
+Validation plan complete
+
+
+Greyson Heath:
+Final demo is ready at this point in time. Both radars communicate properly with the computer, and the 
+python script pulls and decodes necessary data from both radars respectively.
+Now working on finalizing the presentation and validation plan.
+
+
+

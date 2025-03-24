@@ -1,0 +1,13 @@
+Zane Meikle: We have been discussing how to move forward with our project in terms of technical merit 
+and are waiting to have a meeting tomorrow with our sponsor to finalize plans. For now the tentative 
+plan is to move forward with integrating everything then going from there.
+
+Oscar Chavez: I have updated github and added the CNN Keras model, and Scaler in my branch. I have also 
+started looking for a suitable 3D model to contain the radar module if needed.
+
+Greyson Heath: Our group has been discussing ideas to increase the technical merit of our project after
+the successful integration of all subsystems. Tomorrow, we will speak with our Texas Instruments 
+sponsor to address any unforeseen issues with our plans moving forward at this time.
+
+
+Daniel Lu：Hospital

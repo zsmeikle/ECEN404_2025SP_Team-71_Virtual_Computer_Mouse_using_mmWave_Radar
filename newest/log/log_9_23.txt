@@ -1,0 +1,26 @@
+Zane Meikle:  
+I worked on the presentation slides and the midterm report with the team mainly over the 
+last week as it has taken up a lot of time. I am now focusing on the Subsystem Intro project as 
+Dr. Lusher has been pushing us to focus on that, I should be done by the end of the lab.
+
+
+
+Greyson Heath: 
+Meeting with Nick on 9/18, discussed the com port errors experienced with OOB demo for 
+only IWR6843 (no mmwaveicboost). Also discussed potential plan for if my technical merit was lacking. 
+Worked on midterm report and presentation over the weekend with the team. Barrel connector to power 
+mmwaveicboost should have arrived on Friday - it was not in my mailbox. Contacted amazon support, 
+received a refund, and re-ordered it to a different address, and it should be coming on Tuesday, 9/24.
+
+
+Oscar Chavez: 
+Meeting with Nick on 9/18, talked about the best IDE for the ML program, 
+worked on the FSR and ICD with the team, and worked on the intro project. I had a few issues with the 
+intro project since I didn’t remember how to use Jupyter Notebook, but I was able to complete about 60% 
+of the intro project.
+
+Daniel Lu: 
+write the presentation slides and the midterm report with the team
+Start to do research on math application in positioning tracking
+Complete 50% of the Subsystem Intro project
+

@@ -1,0 +1,11 @@
+Zane Meikle: I fixed up and polished the mouse frame gen code, and will begin integrating.
+
+Oscar Chavez: TI got back to me about the gesture binary, and stated that the angle data that was 
+produced by the binary was based on angle bins, and would have to be converted back to actual angles. 
+I could not find where the bins were created, so I’ll follow up with them. I also worked on the movement 
+script, and found out that the radar “breaks” if you move your hand and it has a low velocity threshold.
+
+Greyson Heath: Almost done modelling CAD changes to case, planning on printing when finished. Currently 
+integrating GUI with current team code.
+
+Daniel Lu: fixed the moving position error with geo measurements.

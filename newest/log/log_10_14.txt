@@ -1,0 +1,25 @@
+Zane Meikle: 
+Since last update we have gone over what we needed to update Dr. Lusher with and talked with him to 
+update him on the issues with the radar.
+I plan to work on connecting matlab and python together and start on making a test program.
+Oscar Chavez:
+This week we worked on getting the scope of the project updated. After the last update meeting I was 
+researching if the project was still viable. We were unable to find any signs that the original scope 
+was possible.
+We updated lusher on the situation and updated our sponsor on the current status of the project. We 
+just got confirmation that we are no longer required to do 10-15ft. We are now working on a smaller 
+range of about 1ft.
+Since we got confirmation that we’ll be using a shorter range I will focus on optimizing the gesture 
+recognition code by removing gestures we won’t use. If I can accomplish this task I’ll obtain training data.
+
+Daniel Lu
+The basic structure of the positioning code is created, waiting for validation and test.
+Working with Greyson to construct the format of the output data.
+We talked with Dr Lusher about the improvement of our device.
+
+Greyson Heath
+I experimented more with the ML Gesture bin file and OOB demo, and created a script that pulls the live 
+data from the UART port. This data is in binary, and now I plan to ‘decode’ it into a useable format for 
+the next subsystems.
+Now that we have confirmation from our sponsor to work with the shorter range, I will continue with the 
+plans listed above (now that I know time and resources will not be wasted on that).

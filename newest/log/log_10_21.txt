@@ -1,0 +1,20 @@
+Zane Meikle: 
+- I tried to get matlab and python to communicate but ran into issues so we decided to move everything 
+to python.
+- I’m going to work on implementing the testing program within the file itself.
+
+Oscar Chavez:
+Worked on getting the radar modules on my computer (4 hours)
+Helped Greyson create code to get parsed data from the radar (1 hour)
+Communicated with TI. Had our project been reworked we are using two radars with a max range of .5m. (1 hour)
+I’m waiting on ML re-training documentation. I’m gonna send a follow up email since it’s been almost a 
+week since I was promised the files.
+
+
+Greyson Heath: After meeting with TI and confirming the change of scope, we have now decided to use two 
+radars. One radar will be flashed with a program that will track the hand and send in data for the mouse 
+position, and the other radar will be flashed with a separate program that will pickup the gestures for 
+the actions (left click, right click). Working on solidifying a data parser for both devices.
+
+Daniel Lu: I did research on k mean clustering and find this math application can increase the accuracy 
+of the gesture positioning data. The k mean clustering will be used in my final demo.
