@@ -1,0 +1,15 @@
+Zane Meikle: Me and Greyson worked on integrating our parts last time and decided it would be better for 
+all of us to integrate together which we are doing now.
+
+Greyson Heath: Finished designing and printing final case model and lever to hold on computer- it works. 
+Adding a few new settings to GUI and awaiting for Oscar/Daniel to finish their new integration to 
+implement.
+
+
+Oscar: I worked on finding a better configuration for the radar in order to get better, less noisy, data 
+out of the radar. I also had a in-person meeting with our sponsor where we showed the functionality of 
+the mouse.
+
+Daniel Lu: Finishing the final moving position demo for the mouse. Try to improve the limit of use in 
+distance
+
