@@ -768,7 +768,7 @@ def apply_settings():
         gesture_dict[2] = 'LEFT_HOLD_RELEASE'
     else:
         print("Changed hold/rel to None")
-        gesture_dict[0] = 'LEFT_HOLD_RELEASE'
+        gesture_dict[1] = 'NONE'
 
     if double_left_click == 'Push':
         print("Changed double left to Push")
@@ -781,7 +781,7 @@ def apply_settings():
         gesture_dict[2] = 'DOUBLE_LEFT'
     else:
         print("Changed double left to None")
-        gesture_dict[0] = 'None'
+        gesture_dict[3] = 'NONE'
 
     if right_click == 'Push':
         print("Changed right click to Push")
@@ -794,7 +794,7 @@ def apply_settings():
         gesture_dict[2] = 'RIGHT_CLICK'
     else:
         print("Changed right click to None")
-        gesture_dict[0] = 'None'
+        gesture_dict[2] = 'NONE'
 
     print("Updated Settings:")
     print("Sensitivity X:", XScale)
