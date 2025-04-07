@@ -6,11 +6,11 @@ import time                                                        # Allows us t
 import math
                                                                    #
 #Settings__________________________________________________________# These variables let us change different factors
-XScale = 1100                                                      # scales the X and Y movements by the value (must be int)
-YScale = 1150
+XScale = 1500                                                     # scales the X and Y movements by the value (must be int)
+YScale = 1500
 Switch_XY = 0                                                      # switches X with Y and vice versa (0 = off, 1 = on)
-Reverse_X = -1                                                      # reverses X (1 = off, -1 = on)
-Reverse_Y = -1                                                      # reverses Y (1 = off, -1 = on)
+Reverse_X = 1                                                      # reverses X (1 = off, -1 = on)
+Reverse_Y = 1                                                      # reverses Y (1 = off, -1 = on)
 Refresh_Rate = 20                                                  # refreshrate of the board/data
 # Test_File = "Test_Data.csv" #TESTING ONLY                          # the test file being used to demo
 
@@ -81,7 +81,7 @@ def get_pos(num_points_1, list1):
 #Pointer Positioning
 cfg = open("C:/Users/lemal/OneDrive/Desktop/ecen403/Finaldemo/xwr68xx_AOP_profile_2025_03_31T04_44_57_357.cfg", "r") #Open Config File to send to radar over UART
 my_parser = UARTParser("DoubleCOMPort") #Defining Pointer Parser from class UARTParser
-my_parser.connectComPorts("COM5", "COM3") #Device-Manager defined Ports
+my_parser.connectComPorts("COM7", "COM6") #Device-Manager defined Ports
 my_parser.sendCfg(cfg) #Send Config File
 cfg.close() #Close File
 
@@ -127,50 +127,44 @@ while(1): #Radars connected and running, always true until not - Implement GUI?
         #print("Pointer Data")
         #print(pointer_numPoints, "|",pointer_frameNum) #Outputting points, frame number per frame
         # for i in pointCloudArray: #Iterating and outputting each point (X, Y, Z)
-  
+        print(empty_frame_count)
         #print("Gesture Data")
         #print(trimmed_Gesture, '\n') #Outputting feature data
+        if empty_frame_count == 8:
+            point_clouds = []
+            data_points = []  
+            xvels = []                                                       
+            yvels = [] 
+            pre_x_pos = 100000
+            pre_y_pos = 100000
+            empty_frame_count = 0
+            stop_bool = 1
+            continue
 
         if pointer_numPoints == 0:
             xvels.append(0)
             yvels.append(0)
             empty_frame_count += 1
-            print(empty_frame_count)
-            if empty_frame_count == 8:
-                point_clouds = []
-                data_points = []  
-                xvels = []                                                       
-                yvels = [] 
-                pre_x_pos = 100000
-                pre_y_pos = 100000
-                empty_frame_count = 0
-                stop_bool = 1
             continue
+
+
 
         newPointCloud = filter_ys(pointCloudArray)
 
         if len(newPointCloud) == 0: 
             xvels.append(0)
             yvels.append(0)
-            empty_frame_count += 1
-            print(empty_frame_count)
-            if empty_frame_count == 8:
-                point_clouds = []
-                data_points = []  
-                xvels = []                                                       
-                yvels = [] 
-                pre_x_pos = 100000
-                pre_y_pos = 100000
-                empty_frame_count = 0
-                stop_bool = 1
+            empty_frame_count+=1
             continue
+
 
         x_pos, y_pos = get_pos(len(newPointCloud), newPointCloud)
 
-        if(abs(x_pos) < 0.1 and abs(y_pos) < 0.1):
+        if(abs(x_pos) < 0.15 and abs(y_pos) < 0.15):
             stop_bool = 0        
 
-        if ((abs(x_pos) > 0.1 or abs(y_pos) > 0.1)) and stop_bool == 1:
+        if ((abs(x_pos) > 0.15 or abs(y_pos) > 0.15)) and stop_bool == 1:
+            empty_frame_count +=1
             continue
 
 
@@ -182,14 +176,14 @@ while(1): #Radars connected and running, always true until not - Implement GUI?
             if pre_x_pos !=100000  or pre_y_pos != 100000:
                 for point in newPointCloud:
 
-                    if point[0] > (pre_x_pos - 1) and point[0] < (pre_x_pos + 1) and point[2] > (pre_y_pos - 1) and point[2] < (pre_y_pos + 1):
+                    if point[0] > (pre_x_pos - 0.1) and point[0] < (pre_x_pos + 0.1) and point[2] > (pre_y_pos - 0.1) and point[2] < (pre_y_pos + 0.1):
                         newPointCloud2.append(point)
                     else:
                         newPointCloud2 == newPointCloud2               
             print(newPointCloud2)
 
-            point_clouds.append(newPointCloud2)
-            data_points.append(len(newPointCloud2))
+            point_clouds.append(newPointCloud)
+            data_points.append(len(newPointCloud))
 
             if(len(data_points) > 1):
                 x_vec, y_vec = get_vel(data_points[0], data_points[1], point_clouds[0], point_clouds[1])
@@ -197,10 +191,8 @@ while(1): #Radars connected and running, always true until not - Implement GUI?
                 data_points.pop(0)
         
 
-                if abs(x_vec) < .05: x_vec = 0
-                if abs(y_vec) < .05: y_vec = 0
-                if abs(x_vec) > .3: x_vec = 0
-                if abs(y_vec) > .3: y_vec = 0
+                if abs(x_vec) > .4: x_vec = 0
+                if abs(y_vec) > .4: y_vec = 0
                 xvels.append(x_vec)
                 yvels.append(y_vec)
 
@@ -212,12 +204,31 @@ while(1): #Radars connected and running, always true until not - Implement GUI?
         
             avg_x = simple_avg(xvels)
             avg_y = simple_avg(yvels)
-            if abs(avg_y) < .03: avg_y = 0
+  
             mov_x = (avg_x + prev_x)/2
             mov_y = (avg_y + prev_y)/2
 
+            
+
             prev_x = avg_x
             prev_y = avg_y
+
+            if abs(mov_x) > 0.04:
+                mov_x = mov_x * 1.3
+            else:
+                mov_x *= 0.9
+            if abs(mov_y) > 0.04:
+                mov_y = mov_y * 1.3
+            else:
+                mov_y *= 0.9
+            if ((abs(mov_x))>0.015 and (abs(mov_y)) > 0.015) and ((abs(mov_x)>((1/3)*abs(mov_y))) or (abs(mov_y)>((1/3)*abs(mov_x))) ) :
+                mov_y *= 1.4
+                mov_x *= 1.4
+            else:
+                mov_y *=0.9
+                mov_x *=0.9
+
+            
 
             if Switch_XY == 0:  # If we are switching X and Y
                 X = XScale * Reverse_X * mov_x  #
@@ -235,6 +246,7 @@ while(1): #Radars connected and running, always true until not - Implement GUI?
             mouse.move(X, Y)
 
         if stop_bool == 1:
+            empty_frame_count+=1
             mouse.move(0, 0)
     
         # New_Delay = Delay - (time.time() - t0)  # Calculate delay with processing time
