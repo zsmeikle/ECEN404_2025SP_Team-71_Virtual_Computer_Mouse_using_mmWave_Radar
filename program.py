@@ -1,3 +1,5 @@
+from scipy.constants import point
+
 from gui_parser import *
 #Imports___________________________________________________________#
 from pathlib import Path
@@ -16,6 +18,7 @@ cwd = Path.cwd()
 model_path = cwd.joinpath("resources", "OOB_Gesture_CNN2.keras")
 scaler_path = cwd.joinpath("resources", "OOB_Gesture_scaler2.bin")
 cfg_path = cwd.joinpath("resources", "radar.cfg")
+icon_path = cwd.joinpath("resources", "TI_Logo.ico")
 
 ports = serial.tools.list_ports.comports()
 data_port = ''
@@ -30,7 +33,7 @@ for port, desc, hwid in sorted(ports):
 #Settings__________________________________________________________# These variables let us change different factors
 XScale = 1100                                                      # scales the X and Y movements by the value (must be int)
 YScale = 1150
-mouse_smoothing = "Algorithm 1"
+mouse_smoothing = "Velocity"
 frame_gen_on_off = 0  # Unchecked = 0 (off), Checked = 1 (on)
 frame_gen_frames = 1     # Default value, range 1 to 20
 Switch_XY = 0                                                      # switches X with Y and vice versa (0 = off, 1 = on)
@@ -463,8 +466,10 @@ def radar_loop():
                 else:
                     DT_counter = 0
                     gesture_active = False
-
-            skip_bol, X, Y = track_vel2(pointCloud, frameNum)
+            if(mouse_smoothing == "Velocity"):
+                skip_bol, X, Y = track_vel2(pointCloud, frameNum)
+            else:
+                skip_bol, X, Y = track_pos(pointCloud)
             if(skip_bol): continue
 
             if (frame_gen_on_off):
@@ -489,7 +494,7 @@ root.configure(bg=BG_COLOR)
 
 # Set window icon (optional)
 try:
-    root.iconbitmap('TI_Logo.ico')
+    root.iconbitmap(icon_path)
 except Exception as e:
     print("Icon not found:", e)
 
