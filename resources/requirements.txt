@@ -1,0 +1,9 @@
+PySide2==5.15.2.1
+pyopengl==3.1.5
+numpy==1.24.3
+pyserial==3.5
+pyqtgraph==0.11.0
+json-fix==1.0.0
+joblib==1.4.2
+tensorflow==2.13.0
+pynput==1.7.7
