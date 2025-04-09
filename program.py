@@ -490,7 +490,7 @@ root.title("Virtual Mouse")
 root.geometry("500x550")
 root.configure(bg=BG_COLOR)
 
-# Set window icon (optional)
+# Set window icon
 try:
     root.iconbitmap(icon_path)
 except Exception as e:
@@ -504,7 +504,7 @@ style.configure('TButton', background=BUTTON_COLOR, foreground='white',
                 font=('Helvetica', 10, 'bold'), borderwidth=1)
 style.map('TButton', background=[('active', BUTTON_COLOR), ('pressed', '#3a6a7c')])
 
-# Create only the Settings frame (no Notebook since there's just one tab)
+# Create Settings frame
 settings_frame = ttk.Frame(root)
 settings_frame.pack(padx=20, pady=20, fill='both', expand=True)
 
@@ -554,7 +554,7 @@ smoothing_drop = ttk.Combobox(settings_frame, values=smoothing_options,
                               font=('Helvetica', 11), width=18)
 smoothing_drop.grid(row=3, column=1, padx=10, pady=5, sticky='ew')
 
-# NEW: Hold/Release Left Click setting
+# Hold/Release Left Click setting
 ttk.Label(settings_frame, text="Hold/Release Left Click:",
           font=('Helvetica', 11), background=BG_COLOR) \
     .grid(row=4, column=0, padx=10, pady=5, sticky='w')
@@ -566,7 +566,7 @@ hold_release_left_click_drop = ttk.Combobox(settings_frame,
                                             font=('Helvetica', 11), width=18)
 hold_release_left_click_drop.grid(row=4, column=1, padx=10, pady=5, sticky='ew')
 
-# NEW: Double Left Click setting
+# Double Left Click setting
 ttk.Label(settings_frame, text="Double Left Click:",
           font=('Helvetica', 11), background=BG_COLOR) \
     .grid(row=5, column=0, padx=10, pady=5, sticky='w')
@@ -578,7 +578,7 @@ double_left_click_drop = ttk.Combobox(settings_frame,
                                       font=('Helvetica', 11), width=18)
 double_left_click_drop.grid(row=5, column=1, padx=10, pady=5, sticky='ew')
 
-# NEW: Right Click setting
+# Right Click setting
 ttk.Label(settings_frame, text="Right Click:",
           font=('Helvetica', 11), background=BG_COLOR) \
     .grid(row=6, column=0, padx=10, pady=5, sticky='w')
@@ -626,7 +626,7 @@ frame_gen_on_off_check = ttk.Checkbutton(settings_frame,
                                          onvalue=1, offvalue=0)
 frame_gen_on_off_check.grid(row=10, column=1, padx=10, pady=5, sticky='w')
 
-# --- CHANGED: Create and assign the label for the slider so we can show/hide it ---
+# Create and assign the label for the slider so we can show/hide it
 generated_frames_label = ttk.Label(settings_frame, text="Number of Generated Frames:",
                                    font=('Helvetica', 11), background=BG_COLOR)
 # Create the slider and its associated value label
@@ -642,7 +642,7 @@ generated_frames_value_label = ttk.Label(settings_frame,
                                          background=BG_COLOR)
 
 
-# --- CHANGED: Update function to show/hide the slider components ---
+# Update function to show/hide the slider components
 def update_generated_frames_state(*args):
     if frame_gen_on_off_var.get() == 1:
         generated_frames_label.grid(row=11, column=0, padx=10, pady=5, sticky='w')
