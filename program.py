@@ -1,5 +1,3 @@
-from scipy.constants import point
-
 from gui_parser import *
 #Imports___________________________________________________________#
 from pathlib import Path
