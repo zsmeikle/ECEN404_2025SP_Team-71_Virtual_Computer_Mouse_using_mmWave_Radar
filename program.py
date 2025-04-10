@@ -12,12 +12,14 @@ import queue
 import random
 import time                                                        # Allows us to add delays
 import serial.tools.list_ports
+# Get cwd and make all paths for used resources
 cwd = Path.cwd()
 model_path = cwd.joinpath("resources", "OOB_Gesture_CNN2.keras")
 scaler_path = cwd.joinpath("resources", "OOB_Gesture_scaler2.bin")
 cfg_path = cwd.joinpath("resources", "radar.cfg")
 icon_path = cwd.joinpath("resources", "TI_Logo.ico")
 
+# Identify ports used by radar
 ports = serial.tools.list_ports.comports()
 data_port = ''
 com_port = ''
@@ -51,30 +53,31 @@ mouse = Controller()                                               # Start mouse
 xvels = []                                                         # stores x-velocities calculated from 2 frames
 yvels = []                                                         # stores y-velocities calculated from 2 frames
 num_vels = 0                                                       # tracks num of velocities
-track_CD = 0
-cur_x = 1
-cur_z = 1
-prev_x = 0
-prev_y = 0
-lastFrame = 0
+track_CD = 0                                                       # tracks count down for hand tracking outside boundaries
+cur_x = 1                                                          # used to check current x-position
+cur_z = 1                                                          # used to check current z-position
+prev_x = 0                                                         # used to track previous x-position
+prev_y = 0                                                         # used to track previous y-position
+lastFrame = 0                                                      # tracks frame number of last significant frame
 
 #-------------------------------------------------------------------------------
 #Position Tracking Variables
-x_array = []
-z_array = []
-prev_posX = 0
-prev_posY = 0
-screen_width = 2560
-screen_height = 1600
+x_array = []                                                       # tracks previous x-positions
+z_array = []                                                       # tracks previous z-positions
+prev_posX = 0                                                      # tracks the previous cursor X-position
+prev_posY = 0                                                      # tracks the previous cursor Y-position
+screen_width = 2560                                                # variable used to store screen width
+screen_height = 1600                                               # variable used to store screen height
 
 #-------------------------------------------------------------------------------
 
-# Custom color scheme
+# Custom color scheme for GUI
 BG_COLOR = "#f0f0f0"
 BUTTON_COLOR = "#4a7a8c"
 TEXT_BG = "#2e2e2e"
 TEXT_FG = "#00ff00"
 
+# Checks if a gesture is repeated and maps the gesture to a mouse action
 def gesture_action(cur_gest, prev_gest, gesture_map):
     if(cur_gest == 0):
         return prev_gest
@@ -85,7 +88,8 @@ def gesture_action(cur_gest, prev_gest, gesture_map):
         else:
             map_action(True, gesture_map[cur_gest])
             return 0
-
+            
+# Helper function for gesture_action
 def map_action(repeat_bol, mouse_action):
     if(mouse_action == "LEFT_HOLD_RELEASE"):
         if(repeat_bol): mouse.release(Button.left)
@@ -97,7 +101,7 @@ def map_action(repeat_bol, mouse_action):
     if(mouse_action == "SCROLL"):
         mouse.scroll(0, 10)
         
-
+# get_pos takes 4 inputs
 def get_pos(num_points_1, num_points_2, list1, list2):
     # the output data from chirp configuration demo in the first frame
     # num_points = 4 # The chirp configuration demo will output the number of points detected
@@ -142,9 +146,16 @@ def get_pos(num_points_1, num_points_2, list1, list2):
     # print("V_y euqals to ", output_v_y)  # velocity check
     return output_v_x, output_v_y
 
+# track_vel function returns X and Y movement vectors based on the perceived velocity of the hand.
+# The input for this function is the current pointCloud
+# The first output is a boolean variable that tells the main function if it should skip the frame for tracking
+# The second and third return values are the movement vectors, X and Y respectively
 def track_vel(pointCloud):
+    # global variables used by function
     global num_vels, prev_x, prev_y, track_CD
 
+    # Checks if frame is empty. If empty, append previous velocities with a factor of .5.
+    # If out of bounds and count down is 0 reset tracking variables
     numPoints = len(pointCloud)
     if numPoints == 0:
         xvels.append(prev_x * .5)
@@ -158,26 +169,29 @@ def track_vel(pointCloud):
                 yvels.clear()
                 num_vels = 0
         return True, 0, 0
-    
-    pointCloudArray = []  # Blank Array to store pointCloud info
-    for i in range(numPoints):  # Iterates through total number of points detected
-        pointCloudArray.append(pointCloud[i][0:3])  # Pulling X, Y, Z values per point detected
 
-    newPointCloud = filter_ys(pointCloudArray)
+    #Filter point cloud based on y-position
+    newPointCloud = filter_ys(pointCloud)
     point_clouds.append(newPointCloud)
     data_points.append(len(newPointCloud))
-    
+
+    # If two frames are stored calculate the velocity between the two.
     if (len(data_points) > 1):
+        # Get velocity vectors assuming 1 frame difference
         x_vec, y_vec = get_pos(data_points[0], data_points[1], point_clouds[0], point_clouds[1])
 
+        #pop oldest frame data
         point_clouds.pop(0)
         data_points.pop(0)
 
+        # Check if current point is within tracking bounds
+        # If it is start count down, if it isn't check if the count down is 0.
+        # If count down is 0 then skip frame.
         if (cur_x < .1 and cur_z < .1):
             track_CD = 25
         else:
             if (track_CD == 0): return True, 0, 0
-
+        # clip velocities if they are too large or too small
         if abs(x_vec) < .05: x_vec = 0
         if abs(y_vec) < .05: y_vec = 0
         if abs(x_vec) > .3: x_vec = 0
@@ -186,20 +200,31 @@ def track_vel(pointCloud):
         yvels.append(y_vec)
 
     # if abs(x_vec) > .25 or abs(y_vec) > .25: continue
+
+    #if no stored velocities skip frame
     if (len(xvels) == 0): return (True, 0 , 0)
+
+    # only keep the latest 5 calculated velocities
     while (len(xvels) > 5):
         xvels.pop(0)
         yvels.pop(0)
 
+    # calculate average velocities
     avg_x = simple_avg(xvels)
     avg_y = simple_avg(yvels)
+
+    # clip y velocity if it is too small
     if abs(avg_y) < .03: avg_y = 0
+
+    # use the averge of the previous velocity and the current velocity
     mov_x = (avg_x + prev_x) / 2
     mov_y = (avg_y + prev_y) / 2
 
+    # Update previous velocity
     prev_x = avg_x
     prev_y = avg_y
 
+    # Switch X and Y if necessary and calculate mouse movement vectors
     if Switch_XY == 0:  # If we are switching X and Y
         X = XScale * Reverse_X * mov_x  #
         Y = YScale * Reverse_Y * mov_y  #
@@ -208,76 +233,108 @@ def track_vel(pointCloud):
         Y = YScale * Reverse_Y * mov_x  #
     else:
         print("ERROR: Switch-XY must be a 0 or a 1.")  #
+    # decrease tracking count down
     track_CD -= 1
 
+    # Check if count down is 0 and reset all tracking variables
     if(track_CD == 0):
         data_points.clear()
         point_clouds.clear()
         xvels.clear()
         yvels.clear()
         num_vels = 0
+
+    # return movement vector
     return False, X, Y
 
+# this function uses velocities to calculate the mouse movement vector using different logic than track_vel()
+# It takes two inputs the current pointCloud and the current frame number
+# Its outputs are the same as track_vel()
 def track_vel2(pointCloud, frameNum):
+    # global variables used by function
     global lastFrame, prev_x, prev_y
+
+    # check if emmpty frame. Append 0 velocity to array of previous velocities
     if len(pointCloud) == 0: 
         xvels.append(0)
         yvels.append(0)
         return True, 0, 0
+        
+    # filter out points that have low doppler
     newPointCloud = filter_doppler(pointCloud)
+    # If no points left skip frame
     if(len(newPointCloud) == 0): return True, 0, 0
     # newPointCloud = filter_ys(newPointCloud)
     # if(len(newPointCloud) == 0): continue
+
+    #append pointCloud to previous frame tracker
     point_clouds.append(newPointCloud)
+
+    # If difference between frames is larger than 8 reset pointClouds
     if(frameNum - lastFrame > 8):
         if(len(point_clouds) > 1):
             point_clouds.pop(0)
+    # Update lastFrame
     lastFrame = frameNum
 
+    # If two consecutive frames calcualte normalized velocity vector assuming 1 frame difference
     if(len(point_clouds) > 1):
+        # Make x and z arrays for both pointClouds
         point_x1 = [point[0] for point in point_clouds[0]]
         point_z1 = [point[2] for point in point_clouds[0]]
         point_x2 = [point[0] for point in point_clouds[1]]
         point_z2 = [point[2] for point in point_clouds[1]]
+        # Calculate averages
         x_pos1 = simple_avg(point_x1)
         z_pos1 = simple_avg(point_z1)
         x_pos2 = simple_avg(point_x2)
         z_pos2 = simple_avg(point_z2)
         # x_pos.append(x_pos1)
         # y_pos.append(z_pos1)
+        
+        # Calculate normalized velocities
         y_vec = z_pos2-z_pos1
         x_vec = x_pos2-x_pos1
 
+        # remove oldest pointCloud
         point_clouds.pop(0)
     
 
         # if abs(x_vec) < .05: x_vec = 0
         # if abs(y_vec) < .05: y_vec = 0
+        # clip velocities if they are too large (most likely made from noise)
         if abs(x_vec) > .21: x_vec = 0
         if abs(y_vec) > .21: y_vec = 0
+        # append velocities to array tracking previous velocities
         xvels.append(x_vec)
         yvels.append(y_vec)
 
     # if abs(x_vec) > .25 or abs(y_vec) > .25: continue
+
+    # if previous velocities are empty skip frame
     if(len(xvels) == 0): return True, 0, 0
+    # check that only the last 5 frames are being used
     while(len(xvels) > 5):
         xvels.pop(0)
         yvels.pop(0)
         # x_pos.pop(0)
         # y_pos.pop(0)
 
-    
+    #calculate average velocity using last 5 velocities
     avg_x = simple_avg(xvels)
     avg_y = simple_avg(yvels)
-    
+
+    # adjust velocity for higher control over small mouse cursor movements
     if(abs(avg_x) > .07): avg_x *= 3
     else: avg_x /= 4
     if(abs(avg_y) > .08): avg_y *= 2
     else: avg_y /= 4
 
+    # use avergae between this and last average velocities
     mov_x = (avg_x + prev_x)/2
     mov_y = (avg_y + prev_y)/2
 
+    # update previous velocities
     prev_x = avg_x
     prev_y = avg_y
 
@@ -387,10 +444,12 @@ def apply_settings():
     frame_gen_frames = frame_gen_frames_var.get()
 
     print("\n\n\n\n")
-    
+
+    #Check for invalid settings (Repeat mouse actions)
     if ((hold_release_left_click == right_click and right_click != "None") or (hold_release_left_click == double_left_click and hold_release_left_click != "None") or (double_left_click == right_click and right_click != "None")):
         print("Invalid Gesture Settings: Same gesture assigned to more than one action")
     else:
+        # Update gesture to mouse action mapping
         for i in range(4):
             gesture_dict[i] = "NONE"
         if hold_release_left_click == "Push":
@@ -414,7 +473,7 @@ def apply_settings():
         elif double_left_click == "Pull":
             gesture_dict[3] = "DOUBLE_LEFT"
     
-
+    # Show updated settings
     print("Updated Settings:")
     print("Sensitivity X:", XScale)
     print("Sensitivity Y:", YScale)
@@ -437,6 +496,7 @@ my_parser.connectComPorts(com_port, data_port) #Device-Manager defined Ports
 my_parser.sendCfg(cfg) #Send Config File
 cfg.close() #Close File
 
+# initialize gesture model
 model = gesture_recognition_model(model_path, scaler_path)
 
 gesture_names = ["NO_GESTURE", "PUSH", "SHINE", "PULL", "SHAKE"]
@@ -446,6 +506,7 @@ gesture_dict = {0:"NONE",
                 3:"DOUBLE_LEFT",
                 4:"SCROLL"}
 
+#populate initial frames
 frames = 0
 while(frames < model.frames):
     radarData = my_parser.readAndParseUartDoubleCOMPort() #Parsing Pointer radar data
@@ -457,12 +518,15 @@ while(frames < model.frames):
     model.fill_frame(numPoints, pointCloud)
     frames += 1
 
+#restart tracking variables
 frames = 0
 DT_counter = 0
 gesture_active = 0
 prev_gest = 0
 gesture_validation = 0
 
+
+# GUI main loop
 def radar_loop():
     global frames
     global frame_gen_on_off
