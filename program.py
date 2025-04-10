@@ -64,6 +64,8 @@ x_array = []
 z_array = []
 prev_posX = 0
 prev_posY = 0
+screen_width = 2560
+screen_height = 1600
 
 #-------------------------------------------------------------------------------
 
@@ -289,17 +291,31 @@ def track_vel2(pointCloud, frameNum):
         print("ERROR: Switch-XY must be a 0 or a 1.")  #
     
     return False, X, Y
-
+    
+# This function returns the motion vector based on the point cloud data from current frame.
+# The first return value is a skip boolean which tells the program to skip the frame if no valuable data is available
+# The last two return values are the movement vectors in the X-Y direction of the screen
 def track_pos(pointCloud):
-    global prev_posX, prev_posY
+    # Global variables used by this function
+    global prev_posX, prev_posY, screen_height, screen_width
 
+    # Intialize x and z
     x_pos = 0
     z_pos = 0
+    # Check for empty frame
     if (len(pointCloud) == 0): return True, 0, 0
+
+    # Filter points based on y-values and doppler. Check for empty data after
     newPointCloud = filter_ys(pointCloud)
     pointer_numPoints = len(newPointCloud)
     if pointer_numPoints == 0:
         return True, 0, 0
+    newPointCloud = filter_doppler(newPointCloud)
+    pointer_numPoints = len(newPointCloud)
+    if pointer_numPoints == 0:
+        return True, 0, 0
+
+    #Calculate average x and z position
     for point in newPointCloud:
         x_pos += point[0]
         z_pos += point[2]
@@ -307,27 +323,50 @@ def track_pos(pointCloud):
     x_pos /= pointer_numPoints
     z_pos /= pointer_numPoints
 
+    # append new position to the array containig the previous 10 frames
     x_array.append(x_pos)
     z_array.append(z_pos)
 
+    # Make sure that only the last 10 significant frames are being taken into consideration
     while(len(x_array) > 10):
         x_array.pop(0)
         z_array.pop(0)
 
+    # Take the average position of the last 10 frames
     avg_x = simple_avg(x_array)
     avg_z = simple_avg(z_array)
+    
+    # Convert hand position into cursor position on screen
+    X = screen_width * (avg_x + .26)/.52   #The x-axis is shifted by .26 so that 0 is at the middle of the screen
+    Y = screen_height * (avg_z + .2)/.4    #The z-axis is shifted by .20 so that 0 is at the middle of the screen
 
-    X = 2560 * (avg_x + .2)/.4
-    Y = 1600 * (avg_z + .2)/.4
-
-    if(X < 0 or X > 2560): X = prev_posX
-    if(Y < 0 or Y > 1600): Y = prev_posY
+    # Check if hand is within the screen if not move it to the edge in which it's laying.
+    if(X < 0):
+        Y = prev_posY
+        if(prev_posX != 0): X = 0
+        else: X = prev_posX
+    elif(X > screen_width):
+        Y = prev_posY
+        if(prev_posX != screen_width): X = screen_width
+        else: X = prev_posX
+    elif(Y < 0):
+        X = prev_posX
+        if(prev_posY != 0): Y = 0
+        else: Y = prev_posY
+    elif(Y > screen_height):
+        X = prev_posX
+        if(prev_posY != screen_height): Y = screen_height
+        else: Y = prev_posY
+    
+    # Calculate change in position so that the output is compatible with frame generator
     delta_x = X-prev_posX
     delta_y = Y-prev_posY
 
+    # Update previous location
     prev_posX = X
     prev_posY = Y
 
+    # Return motion vectors
     return False, delta_x, delta_y
 
 
@@ -486,6 +525,8 @@ radar_thread.start()
 
 # Create the main Tkinter window
 root = tk.Tk()
+screen_width = root.winfo_screenwidth()
+screen_height = root.winfo_screenheight()
 root.title("Virtual Mouse")
 root.geometry("500x550")
 root.configure(bg=BG_COLOR)
