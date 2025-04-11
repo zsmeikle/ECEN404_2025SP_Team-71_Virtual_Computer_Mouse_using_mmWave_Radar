@@ -367,10 +367,6 @@ def track_pos(pointCloud):
     pointer_numPoints = len(newPointCloud)
     if pointer_numPoints == 0:
         return True, 0, 0
-    newPointCloud = filter_doppler(newPointCloud)
-    pointer_numPoints = len(newPointCloud)
-    if pointer_numPoints == 0:
-        return True, 0, 0
 
     #Calculate average x and z position
     for point in newPointCloud:
@@ -394,7 +390,7 @@ def track_pos(pointCloud):
     avg_z = simple_avg(z_array)
     
     # Convert hand position into cursor position on screen
-    X = screen_width * (avg_x + .26)/.52   #The x-axis is shifted by .26 so that 0 is at the middle of the screen
+    X = screen_width * (avg_x + .2)/.4   #The x-axis is shifted by .26 so that 0 is at the middle of the screen
     Y = screen_height * (avg_z + .2)/.4    #The z-axis is shifted by .20 so that 0 is at the middle of the screen
 
     # Check if hand is within the screen if not move it to the edge in which it's laying.
@@ -499,6 +495,7 @@ cfg.close() #Close File
 # initialize gesture model
 model = gesture_recognition_model(model_path, scaler_path)
 
+# Gesture Names and ID to action dictionary.
 gesture_names = ["NO_GESTURE", "PUSH", "SHINE", "PULL", "SHAKE"]
 gesture_dict = {0:"NONE",
                 1:"LEFT_HOLD_RELEASE",
@@ -552,7 +549,7 @@ def radar_loop():
             if gesture_active == False:  # If a gesture isn't active skip frame
                 if frames % 5 == 0:
                     cur_gest = model.get_prediction()  # Check for Gesture
-                    if (cur_gest != 0):  # If gesture detected start cooldown
+                    if (cur_gest != 0):  # If gesture detected start cooldown and perform mouse action
                         if(cur_gest == gesture_validation):
                             print(gesture_dict[cur_gest])
                             gesture_active = True
@@ -567,12 +564,14 @@ def radar_loop():
                 else:
                     DT_counter = 0
                     gesture_active = False
+            #Choose correct tracking algorithm
             if(mouse_smoothing == "Velocity"):
                 skip_bol, X, Y = track_vel2(pointCloud, frameNum)
             else:
                 skip_bol, X, Y = track_pos(pointCloud)
             if(skip_bol): continue
 
+            # Frame generation
             if (frame_gen_on_off):
                 shared_queue.put((X, Y, frame_gen_frames, True))
             else:
