@@ -25,13 +25,15 @@ def filter_doppler(pointCloud):
     return newPointCloud
 
 
-def filter_range(pointCloud, min_range=.05, max_range=3.5):
+# Filter based on range default values apply
+def filter_range(pointCloud, min_range=.05, max_range=.35):
     newPointCloud = []
     for point in pointCloud:
         if point[1] > min_range and point[1] < max_range:
             newPointCloud.append(point)
     return newPointCloud
 
+# only keep values that are smaller than the average
 def filter_under_avg(pointCloud):
     newPointCloud = []
     y_avg = 0
@@ -39,11 +41,11 @@ def filter_under_avg(pointCloud):
         y_avg += point[1]
     y_avg /= len(pointCloud)
     for point in pointCloud:
-        if point[1] < y_avg:
+        if point[1] <= y_avg:
             newPointCloud.append(point)
     return newPointCloud
 
-
+# perform simple average on iteratable
 def simple_avg(vals):
 
     avg_x = 0
@@ -52,6 +54,7 @@ def simple_avg(vals):
     avg_x /= len(vals)
     return avg_x
 
+# perform exponental average on iteratable
 def exponetial_avg(vals):
     avg_x = 0
     total_weights = 0
@@ -61,6 +64,7 @@ def exponetial_avg(vals):
     avg_x /= total_weights
     return avg_x
 
+# perform geometric average on iteratable
 def geometric_avg(vals):
     if(len(vals) == 0): return 0
     prod = 1
