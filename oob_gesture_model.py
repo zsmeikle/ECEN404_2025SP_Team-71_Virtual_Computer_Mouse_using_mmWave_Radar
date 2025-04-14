@@ -8,19 +8,21 @@ from pathlib import Path
 
 class gesture_recognition_model:
     def __init__(self, model_path, scaler_path):
-        self.frames = 30
-        self.gesture_model = keras.models.load_model(model_path) #Gesture_CNN.keras is GEN 1 | Gesture_CNN5.keras is current GEN
+        self.frames = 30                                        # Num of frames used by the model
+        self.gesture_model = keras.models.load_model(model_path) # Gesture_CNN.keras is GEN 1 | Gesture_CNN5.keras is current GEN
         self.scaler = joblib.load(scaler_path)      #gesture_scaler2.bin is GEN 1 | gesture_scaler5.bin is current GEN
         print("Loaded Model Succesfully")
-        self.data_queue = []
-        self.gesture_names = ["NO_GESTURE", "PUSH", "SHINE", "TURN_LEFT", "TURN_RIGHT"]
+        self.data_queue = []                        #Used for internal predicitons
+        self.gesture_names = ["NO_GESTURE", "PUSH", "SHINE", "TURN_LEFT", "TURN_RIGHT"] # Name of gestures
 
     def fill_data(self, gestureData):
+        # Fill internal quueue with external one
         if(len(gestureData) == self.frames):
             self.data_queue = gestureData
         else:
             raise ValueError("Queue size does not match")
-    
+
+    # Fill 1 frame in the internal quueue No popping
     def fill_frame(self, numPoints, pointCloud):
         features = []
         if numPoints == 0:
@@ -33,11 +35,13 @@ class gesture_recognition_model:
             features = [x_pos, y_pos, z_pos, doppler, numPoints]
         self.data_queue.append(features)
 
+    # Add a frame (pop oldest frame)
     def add_frame(self, numPoints, pointCloud):
         self.fill_frame(numPoints, pointCloud)
         self.data_queue.pop(0)
 
 
+    #Gets prediction based on internal queue or external queue
     def get_prediction(self, data_queue=[]):
         # Convert the collected data to a numpy array
         if not(data_queue): data_queue = self.data_queue
